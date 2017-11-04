@@ -36,6 +36,7 @@
     var map;
     var infowindow;
     var locations = [];
+    var myPos;
 
     function initMap(value, callback) {
 
@@ -51,6 +52,7 @@
             lat: position.coords.latitude,
             lng: position.coords.longitude
           };
+          myPos = pos;
           infoWindow.setPosition(pos);
           infoWindow.setContent("You are here");
           infoWindow.open(map);
@@ -89,28 +91,40 @@
 
     function StaticMap() {
       var places = ["gas_station", "hospital", "lodging"];
-
-
+      var tmpurl = "https://maps.googleapis.com/maps/api/staticmap?center=";
+      var flag = false;
+      var count = 0;
+      var colorArray = ["red", "green", "yellow"];
       for (var i = 0; i < places.length; i++) {
         initMap(places[i], function(results, status) {
-
+          if(flag == false) {
+            tmpurl += myPos.lat + "," + myPos.lng + "&zoom=13&size=640x640&markers=color:blue%7C" + myPos.lat + "," + myPos.lng;
+            console.log(myPos.lat);
+            flag = true;
+            
+          }
+          
           locations.push(results);
           if (status === google.maps.places.PlacesServiceStatus.OK) {
             for (var i = 0; i < results.length; i++) {
+              console.log(count);
+              tmpurl += "&markers=color:" + colorArray[count] + "%7C" + locations[count][i].geometry.location.lat() + "," + locations[count][i].geometry.location.lng();
               createMarker(results[i]);
             }
           }
 
           for (var i = 0; i < locations.length; i++) {
             for (var j = 0; j < locations[i].length; j++) {
-              console.log(locations[i][j].geometry.location.lat());
-              console.log(locations[i][j].geometry.location.lng());
+              //console.log(locations[i][j].geometry.location.lat());
+              //console.log(locations[i][j].geometry.location.lng());
             }
           }
+          console.log(tmpurl);
+          count++;
         });
+        
+        
       }
-
-
     }
     //AIzaSyBCk0IKGYS-3ffL3lTv_0sRUN9_5I4z1Ow
   </script>
