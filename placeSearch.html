@@ -8,7 +8,8 @@
       /* Always set the map height explicitly to define the size of the div
        * element that contains the map. */
       #map {
-        height: 100%;
+        height: 50%;
+        width: 50%;
       }
       /* Optional: Makes the sample page fill the window. */
       html, body {
@@ -18,10 +19,6 @@
       }
     </style>
     <script>
-      // This example requires the Places library. Include the libraries=places
-      // parameter when you first load the API. For example:
-      // <script src="https://maps.googleapis.com/maps/api/js?key=YOUR_API_KEY&libraries=places">
-
       var map;
       var infowindow;
 
@@ -47,8 +44,8 @@
         var service = new google.maps.places.PlacesService(map);
         service.nearbySearch({
           location:pos,
-          radius: 500,
-          type: ['store']
+          radius: 10000,
+          type: ['gas_station']
         }, callback);
           }, function() {
             handleLocationError(true, infoWindow, map.getCenter());
@@ -57,8 +54,6 @@
           // Browser doesn't support Geolocation
           handleLocationError(false, infoWindow, map.getCenter());
         }
-
-        
       }
 
       function callback(results, status) {
@@ -77,14 +72,15 @@
         });
 
         google.maps.event.addListener(marker, 'click', function() {
-          infowindow.setContent(place.name);
-          infowindow.open(map, this);
+          infoWindow.setContent(place.name);
+          infoWindow.open(map, this);
         });
       }
     </script>
   </head>
   <body>
-    <div id="map"></div>
-    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCP3ePEvxjrmCXKZ0Z-_5buf2cKsiGai_s &libraries=places&callback=initMap" async defer></script>
+    <div id="map">
+      <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCP3ePEvxjrmCXKZ0Z-_5buf2cKsiGai_s &libraries=places&callback=initMap" async defer></script>
+    </div>
   </body>
 </html>
