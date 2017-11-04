@@ -25,6 +25,6 @@ sesion = requests.Session()
 sesion.proxies = proxies
  
 # Aqui se modifican los datos
-datos = {"lat": 37.8654938, "lon": -4.7791247, "nombre": "mapimage"}
+datos = {"lat":  36.6529220, "lon":  -121.7981630, "nombre": "mapimage"}
  
 save_imagen(datos)
