@@ -17,6 +17,8 @@ GoogleMaps(app, key="AIzaSyAZzeHhs-8JZ7i18MjFuM35dJHq70n3Hx4")
 @app.route('/')
 def placeSearch():
     return render_template('placeSearch.html')
+
+grabzIt.URLToImage("https://run-projects-faithshatt0.c9users.io")
     
 if __name__ == '__main__':
     app.run(debug = True,
