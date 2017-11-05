@@ -25,7 +25,6 @@
       var map;
       var infowindow;
       var service;
-      var request;
 
       function initMap() {
 
@@ -55,12 +54,6 @@
           radius: 500,
           type: ['store']
         },callback);
-        
-        
-        
-        // trying to get the details
-        //service.getDetails({
-        //placeId:place_id 
         },function(){
           handleLocationError(true, infowindow, map.getCenter());
           });
@@ -71,7 +64,7 @@
 
         
       }
-
+      
       function callback(results, status) {
         if (status ==google.maps.places.PlacesServiceStatus.OK) {
           for (var i = 0; i < results.length; i++) {
@@ -82,8 +75,6 @@
         }
       }
       
-      
-
       function createMarker(place) {
         var placeLoc = place.geometry.location;
         var placeid=place.place_id;
@@ -101,9 +92,7 @@
               infowindow.setContent('<div><strong>' + place.name + '</strong><br>' +place.formatted_phone_number+'<br>'+
               place.formatted_address + '</div>');
               infowindow.open(map, this);
-              
             });
-            
           }
           });
       }
