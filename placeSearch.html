@@ -12,17 +12,21 @@
     #map {
       height: 75%;
       width: 75%;
-      margin: auto;
     }
 
     #staticMap {
       float: left;
-      margin: auto;
+      width: 100%;
     }
 
     #addresses {
-      float: right;
       margin: auto;
+      font-family:Consolas,monaco,monospace;
+      font-size:normal;
+      font-style:normal;
+      font-weight:400;
+      line-height:21.4333px;
+      margin:auto;
     }
 
     html,
@@ -36,10 +40,17 @@
 
 <body onload="StaticMap();">
 
+  <div id="floating-panel">
+    <input id="street" type="textbox" placeholder="Street">
+    <input id="city" type="textbox" placeholder="City">
+    <input id="zip" type="textbox" placeholder="Zip Code">
+    <input id="state" type="textbox" placeholder="State">
+    <input id="submit" type="button" value="Insert Location">
+  </div>
   <div id="map"></div>
   <div id="createStaticMap"> </div>
   <div id="staticMap"></div>
-  <span id="addresses"></span>
+  <div id="addresses"></div>
   <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCP3ePEvxjrmCXKZ0Z-_5buf2cKsiGai_s &libraries=places"></script>
   <script>
     var map;
@@ -203,14 +214,6 @@
         
     }
   </script>
-  <div id="floating-panel">
-    <input id="street" type="textbox" value="Street">
-    <input id="city" type="textbox" value="City">
-    <input id="zip" type="textbox" value="Zip Code">
-    <input id="state" type="textbox" value="State">
-
-    <input id="submit" type="button" value="Insert Location">
-  </div>
 </body>
 
 </html>
