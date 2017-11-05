@@ -61,23 +61,19 @@
           // Browser doesn't support Geolocation
           handleLocationError(false, infowindow, map.getCenter());
         }
-
-        
       }
       
       function callback(results, status) {
         if (status ==google.maps.places.PlacesServiceStatus.OK) {
           for (var i = 0; i < results.length; i++) {
-            console.log(results[i]);
+            //console.log(results[i]); for sanity check
             createMarker(results[i]);
-            
           }
         }
       }
       
       function createMarker(place) {
         var placeid=place.place_id;
-        
         service.getDetails({
           placeId: placeid,
         }, function(place, status) {
@@ -85,7 +81,6 @@
             var marker = new google.maps.Marker({
               map: map,
               position: place.geometry.location
-              
             });
             google.maps.event.addListener(marker, 'click', function() {
               infowindow.setContent('<div><strong>' + place.name + '</strong><br>' +place.formatted_phone_number+'<br>'+
