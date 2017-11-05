@@ -30,11 +30,9 @@
 
 </head>
 
-<body>
-  <div>
-    <input type="button" value="Generate Map" onclick="StaticMap()" />
-  </div>
+<body onload="StaticMap();">
   <div id="map"></div>
+  <div id="createStaticMap">  </div>
   <div id="staticMap"></div>
   <span id="addresses"></span>
   <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCP3ePEvxjrmCXKZ0Z-_5buf2cKsiGai_s &libraries=places" async defer></script>
@@ -44,6 +42,10 @@
     var locations = [0,1,2];
     var myPos;
     var service;
+    var tmpurl = "https://maps.googleapis.com/maps/api/staticmap?center=";
+    var alph = ["A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L", "M", "N", "O", "P", "Q", "R", "S", "T", "U", "V", "W", "X", "Y", "Z"];
+    var places = ["gas_station", "hospital", "lodging"];
+    var colorArray = ["red", "green", "yellow"];
 
     function initMap(value, callback) {
 
@@ -102,12 +104,9 @@
     }
 
     function StaticMap() {
-      var places = ["gas_station", "hospital", "lodging"];
-      var tmpurl = "https://maps.googleapis.com/maps/api/staticmap?center=";
       var flag = false;
       var count = 1;
-      var alph = ["A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L", "M", "N", "O", "P", "Q", "R", "S", "T", "U", "V", "W", "X", "Y", "Z"];
-      var colorArray = ["red", "green", "yellow"];
+
       for (var i = 0; i < places.length; i++) {
         initMap(places[i], function(results, status) {
           if(flag === false) {
@@ -132,6 +131,7 @@
           console.log(locations);
           
           if(places.length == count) {
+            document.getElementById("createStaticMap").innerHTML = "<input type='button' value='Generate Static Map' onclick='showStaticMap()' />"
             console.log("locations.length = " + locations.length);
             console.log("location[0].length = " + locations[0].length);
             for (var k = 0; k < locations.length; k++) {
@@ -140,21 +140,22 @@
                 tmpurl += "&markers=color:" + colorArray[k] + "%7Clabel:" + alph[l] + "%7C" + locations[k][l].geometry.location.lat() + "," + locations[k][l].geometry.location.lng();
               }
             }
-            
-            document.getElementById("staticMap").innerHTML = "<img src='" + tmpurl + "' />";
-            document.getElementById("addresses").innerHTML = "";
-            for (var k = 0; k < locations.length; k++) {
-              document.getElementById("addresses").innerHTML += colorArray[k] + ": " +  places[k] +"<br />"
-              for (var l = 0; l < locations[k].length; l++) {
-                document.getElementById("addresses").innerHTML += alph[l] + ": " + locations[k][l].vicinity + "<br />";
-              }
-            }
           }
           count++;
         });
       }
     }
     
+    function showStaticMap() {
+        document.getElementById("staticMap").innerHTML = "<img src='" + tmpurl + "' />";
+        document.getElementById("addresses").innerHTML = "";
+          for (var k = 0; k < locations.length; k++) {
+              document.getElementById("addresses").innerHTML += colorArray[k] + ": " +  places[k] +"<br />"
+              for (var l = 0; l < locations[k].length; l++) {
+                  document.getElementById("addresses").innerHTML += alph[l] + ": " + locations[k][l].vicinity + "<br />";
+              }
+            } 
+    }
   </script>
 
 </body>
