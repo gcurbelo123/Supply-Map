@@ -35,7 +35,7 @@
   <script>
     var map;
     var infowindow;
-    var locations = [];
+    var locations = [0,1,2];
     var myPos;
 
     function initMap(value, callback) {
@@ -61,7 +61,7 @@
           var service = new google.maps.places.PlacesService(map);
           service.nearbySearch({
             location: pos,
-            radius: 10000,
+            radius: 4000,
             type: value
 
           }, callback);
@@ -93,40 +93,50 @@
       var places = ["gas_station", "hospital", "lodging"];
       var tmpurl = "https://maps.googleapis.com/maps/api/staticmap?center=";
       var flag = false;
-      var count = 0;
+      var count = 1;
+      var alph = ["A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L", "M", "N", "O", "P", "Q", "R", "S", "T", "U", "V", "W", "X", "Y", "Z"];
       var colorArray = ["red", "green", "yellow"];
       for (var i = 0; i < places.length; i++) {
         initMap(places[i], function(results, status) {
-          if(flag == false) {
-            tmpurl += myPos.lat + "," + myPos.lng + "&zoom=13&size=640x640&markers=color:blue%7C" + myPos.lat + "," + myPos.lng;
-            console.log(myPos.lat);
+          if(flag === false) {
+            tmpurl += myPos.lat + "," + myPos.lng + "&zoom=13&maptype=hybrid&size=640x640&markers=color:blue%7Clabel:A%7C" + myPos.lat + "," + myPos.lng;
             flag = true;
-            
           }
           
-          locations.push(results);
           if (status === google.maps.places.PlacesServiceStatus.OK) {
-            for (var i = 0; i < results.length; i++) {
-              console.log(count);
-              tmpurl += "&markers=color:" + colorArray[count] + "%7C" + locations[count][i].geometry.location.lat() + "," + locations[count][i].geometry.location.lng();
-              createMarker(results[i]);
+            for (var j = 0; j < results.length; j++) {
+              createMarker(results[j]);
             }
           }
-
-          for (var i = 0; i < locations.length; i++) {
-            for (var j = 0; j < locations[i].length; j++) {
-              //console.log(locations[i][j].geometry.location.lat());
-              //console.log(locations[i][j].geometry.location.lng());
+          for(var z = 0; z < results[0].types.length; z++) {
+            if(results[0].types[z] == "gas_station") {
+              locations[0] = results;
+            } else if(results[0].types[z] == "hospital") {
+              locations[1] = results;
+            } else if(results[2].types[z] == "lodging") {
+              locations[2] = results;
             }
           }
-          console.log(tmpurl);
+          console.log(locations);
+          
+          if(places.length == count) {
+            console.log("locations.length = " + locations.length);
+            console.log("location[0].length = " + locations[0].length);
+            for (var k = 0; k < locations.length; k++) {
+              for (var l = 0; l < locations[k].length; l++) {
+                console.log("Color: " + colorArray[k] + " Letter: " + alph[l] + " Address: " + locations[k][l].vicinity);
+                tmpurl += "&markers=color:" + colorArray[k] + "%7Clabel:" + alph[l] + "%7C" + locations[k][l].geometry.location.lat() + "," + locations[k][l].geometry.location.lng();
+              }
+            }
+            console.log(tmpurl);
+          }
           count++;
         });
         
         
       }
     }
-    //AIzaSyBCk0IKGYS-3ffL3lTv_0sRUN9_5I4z1Ow
+    
   </script>
 
 </body>
