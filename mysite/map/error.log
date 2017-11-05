@@ -1,0 +1,10 @@
+
+[2017-11-05 09:24:07] Traceback (most recent call last):
+  File ".\screenshot.py", line 187, in <module>
+    main()
+  File ".\screenshot.py", line 32, in main
+    create_browser()
+  File ".\screenshot.py", line 78, in create_browser
+    .format(size=str(VIEWPORT_SIZE)))
+NameError: name 'VIEWPORT_SIZE' is not defined
+
