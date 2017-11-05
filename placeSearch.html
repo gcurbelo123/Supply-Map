@@ -13,11 +13,15 @@
       height: 100%;
       width: 100%;
     }
-
-    /* Optional: Makes the sample page fill the window. */
-
-    html,
-    body {
+    
+    #staticMap {
+      float: left;
+    }
+    #addresses {
+      float:right;
+    }
+    
+    html, body {
       height: 100%;
       margin: 0;
       padding: 0;
@@ -31,12 +35,15 @@
     <input type="button" value="Generate Map" onclick="StaticMap()" />
   </div>
   <div id="map"></div>
+  <div id="staticMap"></div>
+  <span id="addresses"></span>
   <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCP3ePEvxjrmCXKZ0Z-_5buf2cKsiGai_s &libraries=places" async defer></script>
   <script>
     var map;
-    var infowindow;
+    var infoWindow;
     var locations = [0,1,2];
     var myPos;
+    var service;
 
     function initMap(value, callback) {
 
@@ -58,7 +65,7 @@
           infoWindow.open(map);
           map.setCenter(pos);
 
-          var service = new google.maps.places.PlacesService(map);
+          service = new google.maps.places.PlacesService(map);
           service.nearbySearch({
             location: pos,
             radius: 4000,
@@ -77,16 +84,21 @@
 
 
     function createMarker(place) {
-      var placeLoc = place.geometry.location;
-      var marker = new google.maps.Marker({
-        map: map,
-        position: place.geometry.location
-      });
-
-      google.maps.event.addListener(marker, 'click', function() {
-        infoWindow.setContent(place.name);
-        infoWindow.open(map, this);
-      });
+        var placeid=place.place_id;
+        service.getDetails({
+          placeId: placeid,
+        }, function(place, status) {
+          if (status === google.maps.places.PlacesServiceStatus.OK) {
+            var marker = new google.maps.Marker({
+              map: map,
+              position: place.geometry.location
+            });
+            google.maps.event.addListener(marker, 'click', function() {
+              infoWindow.setContent('<div><strong>' + place.name + '</strong><br>' +place.formatted_phone_number+'<br>'+ place.formatted_address + '</div>');
+              infoWindow.open(map, this);
+            });
+          }
+          });
     }
 
     function StaticMap() {
@@ -128,12 +140,18 @@
                 tmpurl += "&markers=color:" + colorArray[k] + "%7Clabel:" + alph[l] + "%7C" + locations[k][l].geometry.location.lat() + "," + locations[k][l].geometry.location.lng();
               }
             }
-            console.log(tmpurl);
+            
+            document.getElementById("staticMap").innerHTML = "<img src='" + tmpurl + "' />";
+            document.getElementById("addresses").innerHTML = "";
+            for (var k = 0; k < locations.length; k++) {
+              document.getElementById("addresses").innerHTML += colorArray[k] + ": " +  places[k] +"<br />"
+              for (var l = 0; l < locations[k].length; l++) {
+                document.getElementById("addresses").innerHTML += alph[l] + ": " + locations[k][l].vicinity + "<br />";
+              }
+            }
           }
           count++;
         });
-        
-        
       }
     }
     
